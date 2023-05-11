@@ -49,7 +49,7 @@ class CashFlow(BaseModel):
     currency: str = Field(alias='reportedCurrency')
     capital_expenditure: int = Field(alias='capitalExpenditure')
     dividends_paid: int = Field(alias='dividendsPaid')
-    free_cash_flow: int = Field('freeCashFlow')
+    free_cash_flow: int = Field(alias='freeCashFlow')
 
 
 ModelOfType = {
