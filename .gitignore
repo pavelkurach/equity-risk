@@ -3,3 +3,8 @@
 /playground.ipynb
 /.env
 /playground.py
+/.mypy_cache/
+/.ipynb_checkpoints/
+/test/financial_models/.pytest_cache/
+/test/.pytest_cache/
+/.pytest_cache/
