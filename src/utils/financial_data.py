@@ -18,9 +18,10 @@ async def get_json_parsed_data(session: aiohttp.ClientSession,
 async def get_financial_reports(session: aiohttp.ClientSession,
                                 report_type: FinancialReportType,
                                 ticker: str,
-                                years: dict[int]) -> dict[int, object]:
+                                years: list[int]) -> dict[int, object]:
     limit = datetime.date.today().year - min(years) + 1
-    url = f'{FMP_URL}/v3/{report_type}/{ticker}?limit={limit}&apikey={FMP_KEY}'
+    url = f'{FMP_URL}/v3/{report_type.value}/{ticker}?limit={limit}&apikey' \
+          f'={FMP_KEY}'
     raw_reports = await get_json_parsed_data(session, url)
     financial_reports = {}
     for raw_report in raw_reports:

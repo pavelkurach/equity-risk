@@ -1,9 +1,10 @@
 import datetime
+import enum
 
 from pydantic import BaseModel, Field
 
 
-class FinancialReportType:
+class FinancialReportType(enum.Enum):
     INCOME = 'income-statement'
     BALANCE_SHEET = 'balance-sheet-statement'
     CASH_FLOW = 'cash-flow-statement'
