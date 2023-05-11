@@ -52,3 +52,6 @@ class Company:
                 reports['revenue'])
 
         return ratios
+
+    def get_last_year(self):
+        return max(self.reports.index.to_list())
