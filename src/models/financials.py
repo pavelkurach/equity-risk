@@ -19,7 +19,6 @@ class Income(BaseModel):
     ebitda: int
     depreciation_and_amortization: int = Field(
         alias='depreciationAndAmortization')
-    ebitda_ratio: float = Field(alias='ebitdaratio')
     net_income: int = Field(alias='netIncome')
 
 
