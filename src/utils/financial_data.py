@@ -19,7 +19,7 @@ async def get_financial_reports(
         session: aiohttp.ClientSession,
         report_type: FinancialReportType,
         ticker: str,
-        years: list[int]) -> dict[int, dict[int | str]]:
+        years: list[int]) -> dict[int, dict[int, int | str]]:
     limit = datetime.date.today().year - min(years) + 1
     url = f'{FMP_URL}/v3/{report_type.value}/{ticker}?limit={limit}&apikey' \
           f'={FMP_KEY}'
@@ -35,7 +35,7 @@ async def get_financial_reports(
 async def get_combined_reports(
         session: aiohttp.ClientSession,
         ticker: str,
-        years: list[int]) -> dict[int, dict[int | str]]:
+        years: list[int]) -> dict[int, dict[int, int | str]]:
     income_statements = await get_financial_reports(
         session=session,
         report_type=FinancialReportType.INCOME,

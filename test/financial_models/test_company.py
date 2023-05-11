@@ -1,10 +1,94 @@
-import pytest
-from src.financial_models.company import Company
-import pandas as pd
+import datetime
+
 import numpy as np
+import pandas as pd
+
+from src.financial_models.company import Company
+
 
 def test_calculate_ratios():
-    reports = pd.read_csv('ai_pa_reports.csv', index_col=0)
-    ratios = pd.read_csv('ai_pa_ratios.csv', index_col=0)
+    reports = pd.DataFrame.from_dict({
+        'date': {2020: datetime.date(2020, 12, 31),
+                 2021: datetime.date(2021, 12, 31),
+                 2022: datetime.date(2022, 12, 31)},
+        'symbol': {2020: 'AI.PA', 2021: 'AI.PA', 2022: 'AI.PA'},
+        'currency': {2020: 'EUR', 2021: 'EUR', 2022: 'EUR'},
+        'revenue': {2020: 20485200000, 2021: 23334800000,
+                    2022: 29934000000},
+        'cost_of_revenue': {2020: 7197700000, 2021: 9388700000,
+                            2022: 13813000000},
+        'ebitda': {2020: 5908000000, 2021: 6258400000,
+                   2022: 7307900000},
+        'depreciation_and_amortization': {2020: 2257900000,
+                                          2021: 2248800000,
+                                          2022: 3016800000},
+        'net_income': {2020: 2435100000, 2021: 2572200000,
+                       2022: 2758800000},
+        'cash_and_cash_equivalents': {2020: 1791400000,
+                                      2021: 2096600000,
+                                      2022: 1756400000},
+        'total_debt': {2020: 13491200000, 2021: 13880600000,
+                       2022: 13375700000},
+        'net_debt': {2020: 11699800000, 2021: 11784000000,
+                     2022: 11619300000},
+        'total_equity': {2020: 18542300000, 2021: 21462300000,
+                         2022: 23736400000},
+        'short_term_investments': {2020: 0, 2021: 0, 2022: 0},
+        'net_receivables': {2020: 0, 2021: 0, 2022: 0},
+        'inventory': {2020: 1405900000, 2021: 1585100000,
+                      2022: 1961000000},
+        'other_current_assets': {2020: 469600000, 2021: 524000000,
+                                 2022: 632100000},
+        'account_payables': {2020: 2437900000, 2021: 3333200000,
+                             2022: 3782600000},
+        'short_term_debt': {2020: 2359800000, 2021: 2414100000,
+                            2022: 2230200000},
+        'tax_payables': {2020: 215200000, 2021: 277800000,
+                         2022: 260100000},
+        'deferred_revenue': {2020: 0, 2021: 0, 2022: 0},
+        'other_current_liabilities': {2020: 2477400000,
+                                      2021: 2697200000,
+                                      2022: 2883400000},
+        'capital_expenditure': {2020: -2630200000,
+                                2021: -2916800000,
+                                2022: -3273000000},
+        'dividends_paid': {2020: -1307900000, 2021: -1334800000,
+                           2022: -1410500000},
+        'free_cash_flow': {2020: 2575500000, 2021: 2653900000,
+                           2022: 2537100000}})
+    ratios = pd.DataFrame.from_dict({
+        'cosg_ratio': {2020: 0.3513609825630211,
+                       2021: 0.4023475667243773,
+                       2022: 0.46144852007750387},
+        'ebitda_ratio': {2020: 0.28840333509069965,
+                         2021: 0.26820028455354233,
+                         2022: 0.2441337609407363},
+        'd&a_ratio': {2020: 0.11022103762716498,
+                      2021: 0.09637108524607024,
+                      2022: 0.10078171978352375},
+        'capex_ratio': {2020: -0.12839513404799563,
+                        2021: -0.12499785727754255,
+                        2022: -0.10934054920825817},
+        'short_term_investments_ratio': {2020: 0.0, 2021: 0.0, 2022: 0.0},
+        'receivables_ratio': {2020: 0.0, 2021: 0.0, 2022: 0.0},
+        'inventory_ratio_cogs': {2020: 0.19532628478541755,
+                                 2021: 0.1688306155271763,
+                                 2022: 0.14196771157605154},
+        'other_current_assets_ratio': {2020: 0.02292386698689786,
+                                       2021: 0.022455731354029174,
+                                       2022: 0.021116456203648024},
+        'payables_ratio_cogs': {2020: 0.33870541978687635,
+                                2021: 0.3550225270804265,
+                                2022: 0.2738434807789763},
+        'short_term_debt_ratio': {2020: 0.1151953605529846,
+                                  2021: 0.10345492569038518,
+                                  2022: 0.07450390859891762},
+        'tax_payables_ratio': {2020: 0.010505145177982154,
+                               2021: 0.011904965973567376,
+                               2022: 0.008689116055321707},
+        'deferred_revenue_ratio': {2020: 0.0, 2021: 0.0, 2022: 0.0},
+        'other_current_liabilities': {2020: 0.12093609044578525,
+                                      2021: 0.11558702024444177,
+                                      2022: 0.09632524888087125}})
     calculated_ratios = Company.calculate_ratios(reports)
-    assert np.max(np.abs((ratios-calculated_ratios))) < 1.e-3
+    assert np.max(np.abs((ratios - calculated_ratios))) < 1.e-3
