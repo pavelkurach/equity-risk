@@ -59,15 +59,5 @@ ModelOfType = {
     FinancialReportType.CASH_FLOW: CashFlow,
 }
 
-class ReportsCombined:
-    def __init__(self,
-                 year: int,
-                 symbol: str,
-                 income: Income,
-                 balance_sheet: BalanceSheet,
-                 cash_flow: CashFlow):
-        self.year = year
-        self.currency = income.currency
-        self.income = income
-        self.balance_sheet = balance_sheet
-        self.cash_flow = cash_flow
+class CombinedReport(Income, BalanceSheet, CashFlow):
+    pass
