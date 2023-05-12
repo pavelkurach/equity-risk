@@ -61,3 +61,4 @@ def calc_duration(
         values=[initial_value, *cash_flow, terminal_value],
         dates=dates,
     )
+

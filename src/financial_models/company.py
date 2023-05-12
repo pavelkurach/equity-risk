@@ -1,4 +1,5 @@
 import pandas as pd
+from src.utils.financial_ratios import calculate_ratios
 
 
 class Company:
@@ -7,51 +8,26 @@ class Company:
                  reports: pd.DataFrame):
         self.symbol = symbol
         self.reports = reports
-        self.ratios = Company.calculate_ratios(self.reports)
-
-    @staticmethod
-    def calculate_ratios(reports: pd.DataFrame):
-        ratios = pd.DataFrame(index=reports.index)
-        ratios['cosg_ratio'] = (reports['cost_of_revenue'] /
-                                reports['revenue'])
-        ratios['ebitda_ratio'] = reports['ebitda'] / reports['revenue']
-        ratios['d&a_ratio'] = (reports['depreciation_and_amortization'] /
-                               reports['revenue'])
-        ratios['capex_ratio'] = (reports['capital_expenditure'] /
-                                 reports['revenue'])
-
-        # Current assets
-        ratios['short_term_investments_ratio'] = (
-                reports['short_term_investments'] /
-                reports['revenue'])
-        ratios['receivables_ratio'] = (
-                reports['net_receivables'] /
-                reports['revenue'])
-        ratios['inventory_ratio_cogs'] = (
-                reports['inventory'] /
-                reports['cost_of_revenue'])
-        ratios['other_current_assets_ratio'] = (
-                reports['other_current_assets'] /
-                reports['revenue'])
-
-        # Current liabilities
-        ratios['payables_ratio_cogs'] = (
-                reports['account_payables'] /
-                reports['cost_of_revenue'])
-        ratios['short_term_debt_ratio'] = (
-                reports['short_term_debt'] /
-                reports['revenue'])
-        ratios['tax_payables_ratio'] = (
-                reports['tax_payables'] /
-                reports['revenue'])
-        ratios['deferred_revenue_ratio'] = (
-                reports['deferred_revenue'] /
-                reports['revenue'])
-        ratios['other_current_liabilities'] = (
-                reports['other_current_liabilities'] /
-                reports['revenue'])
-
-        return ratios
+        self.ratios = calculate_ratios(self.reports)
 
     def get_last_year(self):
         return max(self.reports.index.to_list())
+
+def calc_change_in_wc(reports: pd.DataFrame) -> pd.Series:
+    years = sorted(reports.index.to_list())
+    wc = (
+            reports['short_term_investments'] +
+            reports['net_receivables'] +
+            reports['inventory'] +
+            reports['other_current_assets'] -
+            reports['account_payables'] -
+            reports['short_term_debt'] -
+            reports['tax_payables'] -
+            reports['deferred_revenue'] -
+            reports['other_current_liabilities']
+    )
+    change_in_wc = pd.Series(index=reports.index,
+                             name='change_in_wc')
+    for year in years[1:]:
+        change_in_wc[year] = wc[year] - wc[year - 1]
+    return change_in_wc
