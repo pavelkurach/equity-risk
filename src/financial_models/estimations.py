@@ -149,7 +149,7 @@ class CompanyEstimations(Company):
                  symbol: str,
                  reports: pd.DataFrame,
                  n_years: int):
-        super.__init__(symbol, reports)
+        super().__init__(symbol, reports)
         self.n_years = n_years
         self.years = sorted(list(
             range(self.get_last_year() + 1,
