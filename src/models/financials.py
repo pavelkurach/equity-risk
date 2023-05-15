@@ -1,7 +1,7 @@
 import datetime
 import enum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 
 class FinancialReportType(enum.Enum):
@@ -21,6 +21,18 @@ class Income(BaseModel):
         alias='depreciationAndAmortization')
     net_income: int = Field(alias='netIncome')
     interest_expense: int = Field(alias='interestExpense')
+
+    @validator('revenue')
+    def revenue_must_be_positive(cls, v):
+        if v <= 0:
+            raise ValueError('must be positive')
+        return v
+
+    @validator('cost_of_revenue')
+    def cost_of_revenue_must_be_positive(cls, v):
+        if v <= 0:
+            raise ValueError('must be positive')
+        return v
 
 
 class BalanceSheet(BaseModel):

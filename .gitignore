@@ -8,3 +8,4 @@
 /tests/financial_models/.pytest_cache/
 /tests/.pytest_cache/
 /.pytest_cache/
+/logs/
