@@ -1,3 +1,4 @@
+# type: ignore
 import pandas as pd
 
 from src.financial_models.company import Company
@@ -136,10 +137,10 @@ def make_estimations(reports: pd.DataFrame,
     estimations['nopat'] = (estimations['ebitda'] - estimations[
         'depreciation_and_amortization']) * (1 - tax_rate)
     estimations['free_cash_flow'] = (
-        estimations['nopat'] +
-        estimations['depreciation_and_amortization'] -
-        estimations['change_in_wc'] +
-        estimations['capital_expenditure']
+            estimations['nopat'] +
+            estimations['depreciation_and_amortization'] -
+            estimations['change_in_wc'] +
+            estimations['capital_expenditure']
     )
     return estimations
 
@@ -148,14 +149,17 @@ class CompanyEstimations(Company):
     def __init__(self,
                  symbol: str,
                  reports: pd.DataFrame,
-                 n_years: int):
+                 n_years: int,
+                 tax_rate: float = 0.27):
         super().__init__(symbol, reports)
         self.n_years = n_years
         self.years = sorted(list(
             range(self.get_last_year() + 1,
                   self.get_last_year() + self.n_years + 2)))
+        self.tax_rate = tax_rate
         self.estimations = make_estimations(
             reports=self.reports,
             ratios=self.ratios,
             years=self.years,
+            tax_rate=tax_rate,
         )

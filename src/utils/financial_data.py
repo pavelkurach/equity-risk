@@ -18,10 +18,10 @@ async def get_json_parsed_data(session: aiohttp.ClientSession,
 async def get_financial_reports(
         session: aiohttp.ClientSession,
         report_type: FinancialReportType,
-        ticker: str,
+        symbol: str,
         years: list[int]) -> dict[int, dict[int, int | str]]:
     limit = datetime.date.today().year - min(years) + 1
-    url = f'{FMP_URL}/v3/{report_type.value}/{ticker}?limit={limit}&apikey' \
+    url = f'{FMP_URL}/v3/{report_type.value}/{symbol}?limit={limit}&apikey' \
           f'={FMP_KEY}'
     raw_reports = await get_json_parsed_data(session, url)
     financial_reports = {}
@@ -34,24 +34,24 @@ async def get_financial_reports(
 
 async def get_combined_reports(
         session: aiohttp.ClientSession,
-        ticker: str,
+        symbol: str,
         years: list[int]) -> dict[int, dict[int, int | str]]:
     income_statements = await get_financial_reports(
         session=session,
         report_type=FinancialReportType.INCOME,
-        ticker=ticker,
+        symbol=symbol,
         years=years,
     )
     balance_sheet_statements = await get_financial_reports(
         session=session,
         report_type=FinancialReportType.BALANCE_SHEET,
-        ticker=ticker,
+        symbol=symbol,
         years=years,
     )
     cash_flow_statements = await get_financial_reports(
         session=session,
         report_type=FinancialReportType.CASH_FLOW,
-        ticker=ticker,
+        symbol=symbol,
         years=years,
     )
     combined_reports = {}
@@ -65,8 +65,8 @@ async def get_combined_reports(
 
 
 async def get_market_cap(session: aiohttp.ClientSession,
-                         ticker: str) -> int:
-    url = f'{FMP_URL}/v3/market-capitalization/{ticker}?' \
+                         symbol: str) -> int:
+    url = f'{FMP_URL}/v3/market-capitalization/{symbol}?' \
           f'apikey={FMP_KEY}'
     market_cap_data = await get_json_parsed_data(session, url)
     return market_cap_data[0]['marketCap']

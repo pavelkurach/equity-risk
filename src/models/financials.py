@@ -20,6 +20,7 @@ class Income(BaseModel):
     depreciation_and_amortization: int = Field(
         alias='depreciationAndAmortization')
     net_income: int = Field(alias='netIncome')
+    interest_expense: int = Field(alias='interestExpense')
 
 
 class BalanceSheet(BaseModel):

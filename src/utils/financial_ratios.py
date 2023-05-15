@@ -7,7 +7,7 @@ def calculate_ratios(reports: pd.DataFrame):
                             reports['revenue'])
     ratios['ebitda_ratio'] = reports['ebitda'] / reports['revenue']
     ratios['da_ratio'] = (reports['depreciation_and_amortization'] /
-                           reports['revenue'])
+                          reports['revenue'])
     ratios['capex_ratio'] = (reports['capital_expenditure'] /
                              reports['revenue'])
 
@@ -41,5 +41,10 @@ def calculate_ratios(reports: pd.DataFrame):
     ratios['other_current_liabilities_ratio'] = (
             reports['other_current_liabilities'] /
             reports['revenue'])
+
+    ratios['interest_ratio'] = (
+            reports['interest_expense'] /
+            reports['total_debt']
+    )
 
     return ratios
