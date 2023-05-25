@@ -5,7 +5,7 @@
 /playground.py
 /.mypy_cache/
 /.ipynb_checkpoints/
-/tests/financial_models/.pytest_cache/
-/tests/.pytest_cache/
+/test/financial_models/.pytest_cache/
+/test/.pytest_cache/
 /.pytest_cache/
 /logs/

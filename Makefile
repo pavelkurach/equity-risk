@@ -3,7 +3,7 @@ init:
 	source venv/bin/activate && \
 	pip install -r requirements.txt
 
-test:
+tests:
 	PYTHONPATH=. pytest test
 
 check_types:

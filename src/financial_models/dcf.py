@@ -3,7 +3,7 @@ import functools
 
 from scipy.optimize import fsolve
 
-from src.financial_models.estimations import CompanyEstimations
+from src.fmp.financial_models.estimations import CompanyEstimations
 from src.utils.financial_formulas import calc_npv
 
 

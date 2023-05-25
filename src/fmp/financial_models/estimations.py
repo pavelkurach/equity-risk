@@ -1,7 +1,7 @@
 # type: ignore
 import pandas as pd
 
-from src.financial_models.company import Company
+from src.fmp.financial_models.company import Company
 
 
 def estimate_revenue(reports: pd.DataFrame,
@@ -50,16 +50,15 @@ def estimate_change_in_wc(revenue: pd.Series,
                           ratios: pd.DataFrame,
                           past_wc: int,
                           years: list[int]) -> pd.Series:
-    cosg_ratio_mean = ratios['cosg_ratio'].mean()
     # Current assets
     short_term_investments_ratio_mean = ratios[
         'short_term_investments_ratio'].mean()
     receivables_ratio_mean = ratios['receivables_ratio'].mean()
-    inventory_ratio_cogs_mean = ratios['inventory_ratio_cogs'].mean()
+    inventory_ratio_mean = ratios['inventory_ratio'].mean()
     other_current_assets_ratio_mean = ratios[
         'other_current_assets_ratio'].mean()
     # Current liabilities
-    payables_ratio_cogs_mean = ratios['payables_ratio_cogs'].mean()
+    payables_ratio_mean = ratios['payables_ratio'].mean()
     short_term_debt_ratio_mean = ratios['short_term_debt_ratio'].mean()
     tax_payables_ratio_mean = ratios['tax_payables_ratio'].mean()
     deferred_revenue_ratio_mean = ratios['deferred_revenue_ratio'].mean()
@@ -70,21 +69,18 @@ def estimate_change_in_wc(revenue: pd.Series,
                                  name='change_in_wc')
     previous_wc = past_wc
     for year in years:
-        cogs = revenue[year] * cosg_ratio_mean
-        current_assets = (
-                revenue[year] * (
+        current_assets = revenue[year] * (
                 short_term_investments_ratio_mean +
                 receivables_ratio_mean +
-                other_current_assets_ratio_mean
-        ) + cogs * inventory_ratio_cogs_mean
+                other_current_assets_ratio_mean +
+                inventory_ratio_mean
         )
-        current_liabilities = (
-                revenue[year] * (
+        current_liabilities = revenue[year] * (
                 short_term_debt_ratio_mean +
                 tax_payables_ratio_mean +
                 deferred_revenue_ratio_mean +
-                other_current_liabilities_ratio_mean
-        ) + cogs * payables_ratio_cogs_mean
+                other_current_liabilities_ratio_mean +
+                payables_ratio_mean
         )
         current_wc = current_assets - current_liabilities
         change_in_wc_est[year] = current_wc - previous_wc

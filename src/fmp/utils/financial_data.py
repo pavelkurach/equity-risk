@@ -2,10 +2,10 @@ import datetime
 
 import aiohttp
 
-from src.models.financials import FinancialReportType
-from src.models.financials import ModelOfType
-from src.utils.config import FINANCIAL_MODELLING_PREP_API_KEY as FMP_KEY
-from src.utils.config import FINANCIAL_MODELLING_PREP_URL as FMP_URL
+from src.fmp.models.financials import FinancialReportType
+from src.fmp.models.financials import ModelOfType
+from src.fmp.utils.config import FINANCIAL_MODELLING_PREP_API_KEY as FMP_KEY
+from src.fmp.utils.config import FINANCIAL_MODELLING_PREP_URL as FMP_URL
 
 
 async def get_json_parsed_data(session: aiohttp.ClientSession,
@@ -55,7 +55,10 @@ async def get_combined_reports(
         years=years,
     )
     combined_reports = {}
-    for year in sorted(years):
+    fetched_years = set(income_statements.keys()) \
+                    | set(balance_sheet_statements.keys()) \
+                    | set(cash_flow_statements.keys())
+    for year in sorted(list(fetched_years)):
         combined_reports[year] = {
             **income_statements[year],
             **balance_sheet_statements[year],

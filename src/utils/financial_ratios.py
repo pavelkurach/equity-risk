@@ -3,8 +3,6 @@ import pandas as pd
 
 def calculate_ratios(reports: pd.DataFrame):
     ratios = pd.DataFrame(index=reports.index)
-    ratios['cosg_ratio'] = (reports['cost_of_revenue'] /
-                            reports['revenue'])
     ratios['ebitda_ratio'] = reports['ebitda'] / reports['revenue']
     ratios['da_ratio'] = (reports['depreciation_and_amortization'] /
                           reports['revenue'])
@@ -18,17 +16,17 @@ def calculate_ratios(reports: pd.DataFrame):
     ratios['receivables_ratio'] = (
             reports['net_receivables'] /
             reports['revenue'])
-    ratios['inventory_ratio_cogs'] = (
+    ratios['inventory_ratio'] = (
             reports['inventory'] /
-            reports['cost_of_revenue'])
+            reports['revenue'])
     ratios['other_current_assets_ratio'] = (
             reports['other_current_assets'] /
             reports['revenue'])
 
     # Current liabilities
-    ratios['payables_ratio_cogs'] = (
+    ratios['payables_ratio'] = (
             reports['account_payables'] /
-            reports['cost_of_revenue'])
+            reports['revenue'])
     ratios['short_term_debt_ratio'] = (
             reports['short_term_debt'] /
             reports['revenue'])

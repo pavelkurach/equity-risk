@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 import pandas as pd
 
-from src.financial_models.company import Company
+import src.utils.financial_ratios as fr
 
 
 def test_calculate_ratios():
@@ -90,5 +90,5 @@ def test_calculate_ratios():
         'other_current_liabilities': {2020: 0.12093609044578525,
                                       2021: 0.11558702024444177,
                                       2022: 0.09632524888087125}})
-    calculated_ratios = Company.calculate_ratios(reports)
+    calculated_ratios = fr.calculate_ratios(reports)
     assert np.max(np.abs((ratios - calculated_ratios))) < 1.e-3

@@ -15,7 +15,6 @@ class Income(BaseModel):
     symbol: str
     currency: str = Field(alias='reportedCurrency')
     revenue: int
-    cost_of_revenue: int = Field(alias='costOfRevenue')
     ebitda: int
     depreciation_and_amortization: int = Field(
         alias='depreciationAndAmortization')
@@ -28,11 +27,6 @@ class Income(BaseModel):
             raise ValueError('must be positive')
         return v
 
-    @validator('cost_of_revenue')
-    def cost_of_revenue_must_be_positive(cls, v):
-        if v <= 0:
-            raise ValueError('must be positive')
-        return v
 
 
 class BalanceSheet(BaseModel):
