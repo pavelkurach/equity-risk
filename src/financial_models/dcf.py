@@ -1,17 +1,16 @@
-import datetime
 import functools
 
+from models import estimations
 from scipy.optimize import fsolve
 
 from src.utils.financial_formulas import calc_npv
-from models import estimations
 
 
 class DCF:
     def __init__(
-        self,
-        symbol: str,
-        estimations: estimations.Estimations,
+            self,
+            symbol: str,
+            estimations: estimations.Estimations,
     ):
         self.symbol = symbol
         self.dates = estimations.dates
@@ -36,15 +35,16 @@ class DCF:
     def calc_implied_coe_from_dcf_to_firm(self, growth_rate: float) -> float:
         wacc = self.calc_implied_wacc_from_dcf_to_firm(growth_rate=growth_rate)
         coe = (
-            wacc
-            - self.after_tax_cost_of_debt
-            * (self.total_debt / self.enterprise_value)
-            * self.enterprise_value
-            / self.market_cap
+                wacc
+                - self.after_tax_cost_of_debt
+                * (self.total_debt / self.enterprise_value)
+                * self.enterprise_value
+                / self.market_cap
         )
         return coe
 
-    def calculate_implied_coe_from_dcf_to_equity(self, growth_rate: float) -> float:
+    def calculate_implied_coe_from_dcf_to_equity(self,
+                                                 growth_rate: float) -> float:
         calc_npv_ = functools.partial(
             calc_npv,
             growth_rate=growth_rate,
